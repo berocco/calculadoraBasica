@@ -9,7 +9,6 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      virgula: false,
       display: "",
       auxdisplay: "",
       operacao: "",
@@ -19,14 +18,11 @@ class App extends Component {
   }
   vaiBotao = val => {
     if (this.state.display === "erro"){
-      this.setState({ display: val, auxdisplay: "", virgula: "", operacao: ""});
+      this.setState({ display: val, auxdisplay: "", operacao: ""});
     }
     else{
-      if (val === "," && this.state.virgula){
-        this.setState({ display: "erro", auxdisplay:"", virgula:false, operacao: ""});
-      }
-      else if (val === ","){
-        this.setState({display: this.state.display + val, virgula: true});
+      if (val === "," && this.state.display.includes(',')){
+        this.setState({ display: "erro", auxdisplay:"", operacao: ""});
       }
       else{
       this.setState({ display: this.state.display + val });
@@ -35,18 +31,18 @@ class App extends Component {
   };
   vaiOperacao = val => {
     if (val === "AC"){
-      this.setState({ auxdisplay: "", display: "", virgula: false})
+      this.setState({ auxdisplay: "", display: ""})
     }
     else if(this.state.operacao !== ""){
-      this.setState({ display: "erro", auxdisplay:"", virgula:false, operacao: ""}); 
+      this.setState({ display: "erro", auxdisplay:"", operacao: ""}); 
     }
     else{
-    this.setState({ auxdisplay: this.state.display, display: "", virgula: false, operacao: val})
+    this.setState({ auxdisplay: this.state.display, display: "", operacao: val})
   }
   };
   fazConta = val => {
     if (this.state.operacao === '' || this.state.display === '' || this.state.auxdisplay === "" ){
-      this.setState({ display: "erro", auxdisplay:"", virgula:false, operacao: ""});
+      this.setState({ display: "erro", auxdisplay:"", operacao: ""});
     }
     else{
       var resultado = '';
@@ -64,12 +60,12 @@ class App extends Component {
       else if (this.state.operacao === '÷'){
         resultado = num1/num2
       };
-    this.setState({ auxdisplay:'', display: String(resultado).replace('.',','), virgula: false, operacao: ''})
+    this.setState({ auxdisplay:'', display: String(resultado).replace('.',','), operacao: ''})
   }
   };
   fazMemoria = val => {
-    var id = val.charAt(2);
-    var op = val.substring(0,2);
+    var id = val.slice(2);
+    var op = val.slice(0,2);
     var memoria = this.state.memoria;
     var maxID = this.state.maxID
     if (op === "MS"){
@@ -86,14 +82,18 @@ class App extends Component {
       this.setState({memoria: memoria})
     }
     if (op === "MR" && !id){
+      if (memoria.length >= 1) {
       this.setState({display: memoria[memoria.length-1].val})
+    }
     }
     if (op === "MR" && id){
       this.setState({display: memoria.find(item => item.id === parseInt(id)).val})
     }
     if (op === "M+"){
+      if (memoria.length >= 1) {
       var sum = parseFloat(memoria[memoria.length-1].val.replace(',','.')) + parseFloat(this.state.display.replace(',','.'));
       this.setState({display: String(sum).replace('.', ',')})
+      }
     }
   };
 
