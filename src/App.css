@@ -16,3 +16,28 @@
   display: flex;
   width: 100%;
 }
+
+.container {
+  width: 800px;
+}
+
+.column-left{
+  float: left;
+}
+
+.column-right{
+  float: right;
+  width: 50%;
+  height:  670px;
+  background-color: darkgrey;
+  text-align: center;
+}
+.column-right .header{
+  width: 100%;
+  text-align: center;
+}
+
+.row{
+  position: absolute;
+  top: 0;
+}
