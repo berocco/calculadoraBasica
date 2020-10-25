@@ -14,7 +14,7 @@ class App extends Component {
       auxdisplay: "",
       operacao: "",
       memoria: [],
-      maxID: 2
+      maxID: 0
     };
   }
   vaiBotao = val => {
@@ -77,20 +77,22 @@ class App extends Component {
       this.setState({memoria: memoria, maxID: maxID+1})
     }
     if (op === "MC" && !id){
-      this.setState({memoria: []})
+      this.setState({memoria: [], maxID: 0})
     }
     if (op === "MC" && id){
+      if (parseInt(id) === maxID){
+      }
       memoria = memoria.filter(item => item.id !== parseInt(id));
       this.setState({memoria: memoria})
     }
     if (op === "MR" && !id){
-      this.setState({display: memoria.find(item => item.id === maxID).val})
+      this.setState({display: memoria[memoria.length-1].val})
     }
     if (op === "MR" && id){
       this.setState({display: memoria.find(item => item.id === parseInt(id)).val})
     }
     if (op === "M+"){
-      var sum = parseFloat(memoria.find(item => item.id === maxID).val.replace(',','.')) + parseFloat(this.state.display.replace(',','.'));
+      var sum = parseFloat(memoria[memoria.length-1].val.replace(',','.')) + parseFloat(this.state.display.replace(',','.'));
       this.setState({display: String(sum).replace('.', ',')})
     }
   };
